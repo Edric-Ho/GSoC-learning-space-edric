@@ -304,6 +304,60 @@ These did not block this model, but they suggest that building more structured b
 
 ---
 
+## 18. Refinement: limiting wins per step
+
+I implemented the refinement I had planned earlier: each agent can now win at most one local contest per step.
+
+The motivation was to isolate whether the strongest amplification in the system comes from:
+- repeated wins across time
+  or
+- repeated wins within the same timestep
+
+This change keeps the interaction structure local and decentralized,
+but removes the most aggressive within-step compounding mechanism.
+
+---
+
+## 19. Results of the refinement
+
+After introducing the single-win constraint, I compared the same metrics:
+
+Baseline version:
+- Gini: 0.7810
+- top 10% share: 0.6996
+- effort-success correlation: 0.1920
+
+Refined version:
+- Gini: 0.0524
+- top 10% share: 0.1068
+- effort-success correlation: 0.0663
+
+The change was much stronger than I expected.
+
+The system shifted from extreme inequality to near equality.
+
+---
+
+## 20. Interpretation
+
+This result suggests that most of the inequality in the original model was driven by repeated wins within a single timestep, rather than by long-term accumulation alone.
+
+In other words, the structure of opportunities specifically, whether agents can accumulate multiple rewards within one round, has a dominant effect on the global outcome.
+
+---
+
+## 21. Updated takeaway
+
+This refinement clarified something important for me:
+
+> it is not enough to say that agents "interact locally" — the exact way rewards are distributed within those interactions can fundamentally change the emergent system behavior.
+
+Allowing multiple wins within a single timestep creates a strong amplification mechanism that can dominate effort, randomness, and long-term accumulation.
+
+This makes me think more carefully about how to design interaction rules in agent-based models, especially when studying inequality or fairness.
+
+---
+
 ## Final thought
 
 This started as a simple idea about effort vs luck.

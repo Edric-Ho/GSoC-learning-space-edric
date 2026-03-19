@@ -187,25 +187,49 @@ This compounds very quickly.
 
 ---
 
-## 6. What I’m changing next
+## 6. Refinement: limiting wins per step
 
-To isolate this effect, I’m modifying the model so that:
+To isolate the effect of overlapping contests, I modified the model so that:
 
 - each agent can win **at most once per step**
 
-Everything else stays the same.
+Everything else in the model remains unchanged:
+- same grid
+- same parameters
+- same scoring rule
+- same stochasticity
 
-Then I will compare:
+This keeps the interaction local and decentralized,
+but removes the strongest within-step amplification mechanism.
 
-- Gini
-- top share
-- effort-success correlation
-
-to see how much this one design choice affects inequality.
+The goal of this change is not to make the model "better",
+but to understand which part of the system is driving the extreme inequality.
 
 ---
 
-## 7. Why this model is useful (to me)
+## 7. Before vs after refinement
+
+Baseline version (multiple wins per step allowed):
+- Gini: 0.7810
+- top 10% share: 0.6996
+- effort-success correlation: 0.1920
+
+Refined version (at most one win per agent per step):
+- Gini: 0.0524
+- top 10% share: 0.1068
+- effort-success correlation: 0.0663
+
+The difference between the two versions is striking.
+
+In the baseline model, inequality becomes extreme: a small fraction of agents captures most of the total success. However, once each agent is restricted to at most one win per step, the system becomes nearly egalitarian.
+
+This suggests that the dominant driver of inequality in the original model was not effort or randomness alone, but the ability of agents to accumulate multiple rewards within the same timestep due to overlapping local interactions.
+
+In other words, inequality in this system is highly sensitive to how opportunities are structured and allocated in time, not just to individual attributes.
+
+---
+
+## 8. Why this model is useful (to me)
 
 This model made something very clear:
 
@@ -219,7 +243,7 @@ In particular:
 all matter more than I initially expected.
 
 ---
-## 8. What felt awkward or limiting
+## 9. What felt awkward or limiting
 
 While implementing this model, I noticed a few friction points:
 
@@ -237,7 +261,7 @@ These limitations did not affect this model heavily,
 but they suggest potential challenges for more complex behavioral agents.
 
 ---
-## 9. How I evaluate the model
+## 10. How I evaluate the model
 
 Instead of relying on a single run, I:
 
@@ -250,7 +274,7 @@ This helps distinguish:
 - vs randomness (noise)
 
 ---
-## 10. Connection to behavioral frameworks
+## 11. Connection to behavioral frameworks
 
 In this model, agent behavior is represented by a simple scoring function.
 This makes the system easy to analyze, but it also highlights a limitation:

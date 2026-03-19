@@ -152,7 +152,6 @@ class LocalInequalityModel(mesa.Model):
             include_center=True,
             radius=self.radius,
         )
-
         local_agents: List[OpportunityAgent] = []
         for npos in neighborhood_positions:
             agents_here = self.grid.get_cell_list_contents([npos])
@@ -162,26 +161,27 @@ class LocalInequalityModel(mesa.Model):
 
     def run_local_contests(self) -> None:
         """Resolve one local contest around every grid cell.
-
-        I do this locally rather than globally because I want inequality
-        to emerge from overlapping neighborhood competition, not from
-        a single centralized ranking.
+        I keep this local on purpose: the point is to let inequality emerge
+        from overlapping neighborhood competition rather than from a global ranking.
         """
+        winners_this_round = set()
         for x in range(self.width):
             for y in range(self.height):
                 center = (x, y)
                 local_agents = self.get_agents_in_neighborhood(center)
                 if not local_agents:
                     continue
-                # Use the already-computed latent scores.
-                local_scores = [agent.last_score for agent in local_agents]
-
-                # Softmax keeps better-scoring agents favored without making outcomes deterministic.
+                # If an agent has already won once this round, it should not
+                # be eligible to win again. This keeps the local structure but
+                # removes the strongest within-step amplification effect.
+                eligible_agents = [agent for agent in local_agents if agent not in winners_this_round]
+                if not eligible_agents:
+                    continue
+                local_scores = [agent.last_score for agent in eligible_agents]
                 winner_idx = softmax_sample(local_scores, self.rng)
-                winner = local_agents[winner_idx]
+                winner = eligible_agents[winner_idx]
                 winner.pending_reward += 1
-                # For now, an agent can win multiple overlapping contests in one step.
-                # That turned out to amplify inequality sharply, which is useful as a baseline.
+                winners_this_round.add(winner)
 
     # ------------------------------
     # Main simulation step
