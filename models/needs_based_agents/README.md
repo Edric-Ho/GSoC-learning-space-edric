@@ -63,6 +63,8 @@ This reveals a limitation:
 
 > Mesa does not provide a native abstraction for organizing decision logic beyond `agent.step()`.
 
+The model is highly sensitive to how internal drives are formulated, demonstrating that behavioral outcomes depend not only on interaction structure, but also on the functional form of decision components.
+
 ---
 
 ## 6. Relation to Project Goal
@@ -85,7 +87,17 @@ Possible extensions include:
 
 ---
 
-## 8. How to Run
+## 8. Version Evolution
+
+- **v1**: threshold-based behavior (energy only)
+- **v2**: competing internal drives introduced (energy vs reward)
+- **v3**: calibrated drives to achieve stable behavioral balance
+
+This progression highlights how small modeling choices affect emergent dynamics.
+
+---
+
+## 9. How to Run
 
 ```bash
 python run.py

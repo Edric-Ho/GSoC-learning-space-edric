@@ -32,11 +32,10 @@ class NeedsAgent(mesa.Agent):
     def compute_work_pressure(self) -> float:
         """
         Higher when accumulated reward is still low.
-
         This makes the agent feel some pressure to keep working early on,
         but that pressure weakens as reward builds up.
         """
-        return 1.0 / (1.0 + self.reward)
+        return max(0.3, 1.0 / (1.0 + self.reward))
 
     def decide_action(self) -> str:
         """

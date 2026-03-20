@@ -93,7 +93,9 @@ This model highlights a gap:
 This suggests a potential direction:
 
 - introducing lightweight abstractions for behavioral pipelines
-- or modular decision components
+- or modular decision components that separate observation, evaluation, and action
+
+Importantly, this suggestion emerges from implementation experience rather than being assumed a priori.
 
 ---
 
@@ -141,12 +143,50 @@ To introduce meaningful behavioral structure, the model was extended to include:
 
 This transformed the model from a threshold system into a conflict-based decision system.
 
+### Version 3: Calibrated Competing Drives
+
+To restore a balanced behavioral regime, a minimum work pressure was introduced and increased.
+
+This resulted in:
+
+- sustained work–rest balance (~50/50)
+- stable energy levels
+- continued variability across agents
+
+This confirms that:
+
+> small changes in internal drive formulation can lead to qualitatively different emergent dynamics.
+
+This highlights the sensitivity of behavioral models to design choices, even in minimal systems.
+
 ---
 
-## 10. Summary
+## 11. Modeling Lesson
+
+This model demonstrates that:
+
+- introducing behavioral structure (competing drives) is not sufficient on its own
+- the specific formulation of internal drives (eg. decay rate, lower bounds) critically determines system behavior
+
+In particular:
+
+- rapidly decaying reward pressure led to rest-dominant collapse
+- introducing a lower bound restored sustained behavioral tension
+
+This suggests that:
+
+> behavioral outcomes are highly sensitive to internal state design, even in minimal models
+
+This is an important consideration when designing reusable behavioral frameworks.
+
+---
+
+## 12. Summary
 
 This model demonstrates that:
 
 - even simple behavioral systems require structured decision-making
 - Mesa currently does not provide a natural abstraction for this
 - this becomes more apparent as behavioral complexity increases
+
+This progression from threshold rules to calibrated competing drives illustrates how behavioral structure must be both explicitly modeled and carefully parameterized to produce meaningful dynamics.
