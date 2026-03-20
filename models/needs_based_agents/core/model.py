@@ -1,18 +1,15 @@
 from __future__ import annotations
-
 import mesa
 import numpy as np
 from mesa.datacollection import DataCollector
-
 from .agents import NeedsAgent
 
 
 class NeedsBasedModel(mesa.Model):
     """
     Agents repeatedly choose between:
-    - work: gain reward, lose energy
-    - rest: regain energy, gain no immediate reward
-
+        - work: gain reward, lose energy
+        - rest: regain energy, gain no immediate reward
     """
 
     def __init__(
@@ -22,6 +19,8 @@ class NeedsBasedModel(mesa.Model):
             max_energy: int = 10,
             low_threshold: int = 2,
             high_threshold: int = 7,
+            reward_target: int = 8,
+            decision_margin: float = 0.15,
             work_cost: int = 2,
             work_reward: int = 1,
             rest_gain: int = 1,
@@ -29,20 +28,20 @@ class NeedsBasedModel(mesa.Model):
     ) -> None:
         super().__init__(seed=seed)
 
-        # Core parameters
         self.num_agents = num_agents
         self.initial_energy = initial_energy
         self.max_energy = max_energy
         self.low_threshold = low_threshold
         self.high_threshold = high_threshold
+        self.reward_target = reward_target
+        self.decision_margin = decision_margin
         self.work_cost = work_cost
         self.work_reward = work_reward
         self.rest_gain = rest_gain
 
         for _ in range(self.num_agents):
-            agent = NeedsAgent(self, initial_energy=self.initial_energy)
+            NeedsAgent(self, initial_energy=self.initial_energy)
 
-        # Track both system-level and agent-level behavior.
         self.datacollector = DataCollector(
             model_reporters={
                 "AverageEnergy": self.compute_average_energy,

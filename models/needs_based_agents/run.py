@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from core import NeedsBasedModel
 
 
@@ -9,6 +10,8 @@ def main() -> None:
         max_energy=10,
         low_threshold=2,
         high_threshold=7,
+        reward_target=8,
+        decision_margin=0.15,
         work_cost=2,
         work_reward=1,
         rest_gain=1,

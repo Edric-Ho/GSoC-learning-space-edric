@@ -121,6 +121,28 @@ Possible future directions:
 
 ---
 
+## 10. Version Evolution
+
+### Version 1: Threshold-Based Behavior
+
+The initial model used simple energy thresholds:
+- low energy → rest
+- high energy → work
+
+This produced stable behavior but lacked genuine behavioral tradeoffs.
+
+
+### Version 2: Competing Internal Drives
+
+To introduce meaningful behavioral structure, the model was extended to include:
+
+- recovery pressure (from low energy)
+- reward-seeking pressure (from low reward)
+
+This transformed the model from a threshold system into a conflict-based decision system.
+
+---
+
 ## 10. Summary
 
 This model demonstrates that:
