@@ -1,6 +1,6 @@
 """VSmall smoke test for the local inequality Mesa project."""
 
-from models.local_inequality_model.core import LocalInequalityModel
+from models.model_1_interaction.core import LocalInequalityModel
 # Intentionally lightweight: this only checks that the model runs at all.
 
 def main() -> None:

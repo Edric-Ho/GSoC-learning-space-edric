@@ -2,7 +2,7 @@
 # I use it mainly for quick iteration and sanity checks.
 
 from __future__ import annotations
-from models.local_inequality_model.core import LocalInequalityModel
+from models.model_1_interaction.core import LocalInequalityModel
 
 
 def main() -> None:

@@ -1,4 +1,4 @@
-from models.needs_based_agents.core import NeedsBasedModel
+from models.model_2_needs.core import NeedsBasedModel
 
 def main() -> None:
     model = NeedsBasedModel(num_agents=20, seed=123)
