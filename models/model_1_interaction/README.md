@@ -32,9 +32,9 @@ At every step, the process is:
 
 1. Each agent computes a score:
 
-   $$
-   Z_i(t) = \beta E_i + \delta S_i(t) - \lambda F_i(t) + \varepsilon_i(t)
-   $$
+$$
+Z_i(t) = \beta E_i + \delta S_i(t) - \lambda F_i(t) + \varepsilon_i(t)
+$$
 
    where:
    - $\beta$: weight on effort
@@ -48,15 +48,15 @@ At every step, the process is:
 
 4. A winner is selected probabilistically using a softmax rule:
 
-   $$
-   P(i \text{ wins}) = \frac{\exp(Z_i)}{\sum_{j \in \mathcal{N}} \exp(Z_j)}
-   $$
+$$
+P(i \text{ wins}) = \frac{\exp(Z_i)}{\sum_{j \in \mathcal{N}} \exp(Z_j)}
+$$
 
 5. The winner gains one unit of success:
 
-   $$
-   S_i(t+1) = S_i(t) + 1
-   $$
+$$
+S_i(t+1) = S_i(t) + 1
+$$
 
 Everything is local — there is no global ranking or centralized decision.
 
