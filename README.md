@@ -1,107 +1,85 @@
 # Mesa GSoC Learning Space
-
-This repository is Edric's learning space for Mesa, built in preparation for the GSoC Behavioral Framework project.
-
-The goal here is to:
-
-> build models, understand what breaks or feels awkward, and use that to figure out what Mesa is missing.
-
-Instead of trying to design a framework upfront, I focused on implementing a few small models and observing what actually happens when behavior becomes more structured.
+This is a template repository for GSoC candidates working on [Mesa](https://github.com/mesa/mesa). Fork it to create your personal learning space.
 
 ---
 
-## What I’m exploring
+## Learning Focus
 
-While working through these models, I kept running into the same kinds of questions:
+This learning space is structured around a specific question:
 
-- how much of the outcome comes from interaction structure vs agent logic?
-- how should decision-making actually be written inside an agent?
-- at what point does `agent.step()` become hard to reason about?
+> At what point does agent behavior in Mesa become complex enough to require structured abstractions?
 
-After a few iterations, it started to feel like behavioral modeling in Mesa depends on three different things:
+While building models, I observed a distinction between:
 
-1. how agents interact
-2. how agents decide
-3. how that decision logic is organized in code
+- interaction-driven systems, where simple agent rules are sufficient
+- decision-driven systems, where agent logic becomes increasingly complex and difficult to structure
 
-I wrote a more complete summary here:
+This repository explores that transition through progressively more complex models and reviews of existing Mesa examples.
 
-👉 [notes/behavioral_framework_evaluation.md](notes/behavioral_framework_evaluation.md)
+In particular, I focus on:
 
----
+- how agent behavior is currently implemented in Mesa
+- where decision logic becomes difficult to manage
+- what patterns emerge when behavior is made more explicit
 
-## Models
+Relevant notes and reviews:
+- `reviews/behavioral_gaps_in_mesa_examples.md`
 
-Each model is intentionally small. The goal is not realism, but to isolate specific issues.
-
-### Model 1 — Interaction Structure
-`models/model_1_interaction`
-
-A local competition model where agents repeatedly compete with neighbors.
-
-What surprised me here was how strongly inequality depended on structure. Even with identical agents, allowing overlapping interactions let some agents accumulate rewards much faster than others.
+This aligns with the **Behavioral Framework** project idea, where the goal is to understand and improve how Mesa supports agent decision-making through implementation and experimentation.
 
 ---
 
-### Model 2 — Internal Decision Logic
-`models/model_2_needs`
+## What is this?
+Before contributing to Mesa, you need to understand Mesa — not just the API, but how agent-based models work and how Mesa's pieces fit together. This repo is your space to do that learning, visibly.
 
-A simple needs-based model where agents choose between:
+**The idea is simple: build models first, contribute second.**
 
-- working (gain reward, lose energy)
-- resting (recover energy)
+This repo is also your chance to practice the open-source skills that make contributions successful: clear communication, clean git history, good documentation, collaboration, and code review. These matter as much as the code itself.
 
-The interesting part was not the idea itself, but how sensitive the system was to how I defined “pressure” to work vs rest. Small changes in that function completely changed the long-term behavior.
+_Everything here is a suggestion, nothing is mandatory. It's a tool to help you structure your own learning process. Use as you see fit._
 
----
+## Why build models?
+Mesa is a library *for modellers*. If you want to improve it, you need to experience it the way its users do. That means building models — not just reading the source code or tutorials.
 
-### Model 3 — Decision Architecture
-`models/model_3_pipeline`
+When you build models, you discover things you can't learn any other way:
+- **Where Mesa helps and where it gets in the way.** You'll hit friction points, confusing APIs, missing features, unclear documentation. These are the real problems worth solving — and you found them because you needed something to work, not because you were looking for a PR to open.
+- **How the pieces fit together.** Mesa has agents, models, spaces, data collection, visualization, event scheduling. Reading about them is different from wiring them together in a model that actually does something. Building gives you the architectural intuition that makes your contributions fit naturally into the framework.
+- **What modellers care about.** The best Mesa contributions historically come from people who hit a real problem in their own work. They understand the context because they live in it. Building models puts you in that position.
 
-This model keeps similar behavior to Model 2, but rewrites it as an explicit pipeline:
+Without this experience, it's very hard to make contributions that actually help Mesa's users. You might write code that compiles and passes tests but solves a problem nobody has, or solves it in a way that doesn't fit how modellers think. Building models first prevents that.
 
-- observe → evaluate → decide → act
+## How to use this repo
+### 1. Fork this template
+Click "Use this template" (or fork) to create your own copy under your GitHub account.
 
-It doesn’t change the results much, but it makes the logic easier to follow. This made it clear that Mesa gives flexibility, but doesn’t really help structure decision logic once it grows.
+### 2. Fill in your motivation
+Edit `motivation.md` — who you are, why Mesa, what you want to learn, where you want to go. Keep it honest and concise.
 
----
+### 3. Build models
+This is the core of the repo. Build Mesa models in the `models/` folder. Start simple, increase complexity. Each model should have its own folder with:
+- The model code
+- A `README.md` covering:
+    - What the model does and why you chose it
+    - What Mesa features it uses
+    - What you learned building it
+    - What was hard, what surprised you, what you'd do differently
 
-## What I’ve learned so far
+**Focus on learning, not impressing.** A simple model with a thoughtful README is worth more than a complex model you can't explain.
 
-A few patterns showed up consistently:
+### 4. Review and collaborate
+This is where you practice the collaborative side of open source:
+- **Review others' work**: Find another GSoC candidate's learning repo and open issues or PRs with feedback on their models. Be constructive and specific.
+- **Work together**: Build a model with another candidate. Use branches, PRs, and code review — the same workflow you'd use on Mesa itself.
+- **Document your reviews**: Keep notes in `reviews/` about models you reviewed and what you learned from reading someone else's code.
 
-- system behavior is often dominated by interaction design, not just agent rules
-- internal decision logic is very sensitive to how it’s written
-- even simple agents end up needing multi-step reasoning
-- all of that currently lives inside `agent.step()`, which becomes harder to manage as models grow
+Collaboration is not required, but it's noticed and valued. If you and another candidate review each other's models, improve each other's code, or build something together using proper git workflow — that demonstrates exactly the skills Mesa needs.
 
-So the problem isn’t just *when* agents are evaluated.
-
-It’s also:
-
-- how decisions are represented
-- how behavior is structured
-- how different pieces interact
-
----
-
-## Why this matters for the project
-
-The behavioral framework idea focuses on improving how Mesa supports agent behavior.
-
-From what I’ve seen so far, this probably needs to be approached from multiple angles:
-
-- interaction structure
-- decision logic
-- decision organization
-
-not just scheduling or triggering evaluation.
-
-I’m trying to get to that conclusion through implementation, rather than starting from a fixed design.
+### 5. Link to your Mesa PRs
+When you open a PR on any Mesa repo, link to the relevant work in this learning space. This gives reviewers context for your understanding without having to extract it through the review process.
 
 ---
 
-## Repository structure
+## Repo structure
 ```text
 ├── models/
 │   ├── model_1_interaction/
@@ -129,7 +107,8 @@ I’m trying to get to that conclusion through implementation, rather than start
 │   ├── abm_fundamentals.md
 │   └── behavioral_framework_evaluation.md
 │
-├── reviews/                 # notes from reviewing other candidates (planned)
+├── reviews/
+│   └── behavioral_gaps_in_mesa_examples.md
 │
 ├── motivation.md
 ├── README.md
@@ -138,26 +117,25 @@ I’m trying to get to that conclusion through implementation, rather than start
 ```
 ---
 
-## Next steps
+## What makes a good learning space?
+- **Models that show progression.** Start with a basic model (Boltzmann Wealth, Schelling), then build something that stretches you — a model that uses discrete spaces, PropertyLayers, event scheduling, data collection, or visualization.
+- **Honest READMEs.** "I got stuck on X and solved it by Y" is more useful than a polished summary. We want to see your thinking, not a press release.
+- **Clean git practices.** Meaningful commit messages, branches for separate models, no giant "add everything" commits. This is practice for contributing to Mesa.
+- **Engagement with others.** Reviewing someone else's model, suggesting improvements, or building together shows you understand that open source is collaborative.
 
-Some directions I want to explore next:
+## Suggested starting points
+1. Go through Mesa's [introductory tutorials](https://mesa.readthedocs.io/latest/getting_started.html)
+2. Study the [core examples](https://github.com/mesa/mesa/tree/main/mesa/examples) — don't just run them, read the code and understand the design choices
+3. Build your own version of a classic ABM (Schelling, Sugarscape, flocking, etc.)
+4. Then build something original — a model for a domain you're interested in
+5. Read the [Mesa 3.5 release notes](https://github.com/mesa/mesa/releases) to understand recent changes and direction
+6. Look at [open discussions](https://github.com/mesa/mesa/discussions) to understand what Mesa is working toward
 
-- implementing a simple BDI-style agent
-- comparing how similar models are written in NetLogo or GAMA
-- experimenting with separating decision logic from `step()` in a reusable way
-
----
-
-## Motivation
-
-You can find my background and motivation here:
-
-👉 [motivation.md](motivation.md)
-
----
-
-## Notes
-
-This repo is intentionally a work in progress.
-
-I’m keeping models simple and documenting what actually happens while building them, rather than trying to present polished final results.
+## Resources
+- [Mesa documentation](https://mesa.readthedocs.io/)
+- [Mesa contributing guide](https://github.com/mesa/mesa/blob/main/CONTRIBUTING.md)
+- [Mesa migration guide](https://mesa.readthedocs.io/latest/migration_guide.html)
+- [Community examples](https://github.com/mesa/mesa-examples)
+- [ABM concepts MOOC](https://ocw.tudelft.nl/course-lectures/agent-based-modeling/)
+- [Practical Mesa MOOC](https://www.complexityexplorer.org/courses/172-agent-based-models-with-python-an-introduction-to-mesa)
+- [Matrix chat](https://matrix.to/#/#project-mesa:matrix.org)
