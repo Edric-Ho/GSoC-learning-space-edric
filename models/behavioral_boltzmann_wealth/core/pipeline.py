@@ -36,8 +36,10 @@ class DecisionPipeline:
         wealth_pressure = self_wealth - 1
         relative_pressure = self_wealth - partner_wealth
 
-        score = 0.8 * wealth_pressure + 0.2 * relative_pressure
-        score = score * risk_tolerance
+        absolute_term = 1.0 * wealth_pressure
+        relative_term = 0.3 * relative_pressure
+
+        score = (absolute_term + relative_term) * risk_tolerance
 
         # Smooth probability
         p_transfer = 1 / (1 + math.exp(-score))
