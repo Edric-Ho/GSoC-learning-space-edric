@@ -79,6 +79,37 @@ When you open a PR on any Mesa repo, link to the relevant work in this learning 
 
 ---
 
+## Models
+
+### 1. Behavioral El Farol (Main Example)
+
+A structured behavioral agent-based model demonstrating coordination under uncertainty.
+
+- Explicit decision pipeline (observe → belief → evaluate → decide → act)
+- Heterogeneous prediction strategies
+- Probabilistic decision-making to avoid synchronization
+
+[View model](./models/behavioral_el_farol)
+
+---
+
+## Learning Progression
+
+Before building full models, I explored several components of agent behavior through smaller prototypes:
+
+### Interaction Prototype (`model_1_interaction`)
+Focus: local interactions between agents and emergent effects.
+
+### Needs-Based Prototype (`model_2_needs`)
+Focus: decision-making driven by internal states and utility.
+
+### Decision Pipeline Prototype (`model_3_pipeline`)
+Focus: structuring agent reasoning into modular stages.
+
+These prototypes led to the development of a structured behavioral decision framework, which is applied in the Behavioral El Farol model.
+
+---
+
 ## Repo structure
 ```text
 ├── models/
