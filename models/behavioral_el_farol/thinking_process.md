@@ -236,3 +236,30 @@ The main lesson from this model is:
 > Making behavior explicit improves understanding, but realistic emergence depends on diversity and stochasticity.
 
 Both are necessary for meaningful agent-based modeling.
+
+## 13. Limitations and Open Questions
+
+While the model resolves the synchronization issue, several limitations remain.
+
+First, agents still rely on simple prediction strategies:
+- moving averages do not capture more complex patterns
+- agents do not learn or adapt their prediction methods over time
+
+Second, interaction remains indirect:
+- agents do not communicate
+- there is no network or social influence structure
+
+This means the model does not capture:
+- strategic adaptation
+- coordination through communication
+- persistent group-level dynamics
+
+Finally, the decision pipeline is fixed.
+
+This raises an open question:
+
+> how flexible should behavioral structures be in agent-based models?
+
+As models become more complex, manually structuring decision pipelines may become difficult to maintain, suggesting the need for more formal abstractions.
+
+These limitations point toward the broader motivation for developing behavioral frameworks in Mesa.
