@@ -86,11 +86,11 @@ Behavior is decomposed into modular components with explicit responsibilities.
 
 ## Key Result: Behavioral Equivalence
 
-Under identical initial conditions and policies, both implementations produce identical execution traces.
+Under identical initial conditions and policies, both implementations produce identical execution traces under the default scenario.
 
-This establishes **behavioral equivalence**, meaning:
+This establishes **behavioral equivalence under controlled conditions**
 
-- the structured architecture preserves the exact dynamics of the baseline model
+- the structured architecture preserves the exact dynamics of the baseline model under the same conditions
 - all differences are purely architectural, not behavioral
 - the comparison isolates implementation structure as the only variable
 
@@ -143,14 +143,17 @@ Instead of a single procedural block, responsibilities are distributed:
 
 ---
 
+
 ### 4. Interruption support
 
 Interruption is handled explicitly by `DecisionPolicy`.
 
-A dedicated test confirms that:
+A dedicated forced low-energy test confirms that:
 
 - ongoing actions can be interrupted
 - interruption is represented explicitly as a first-class event
+
+Note that interruption does not necessarily appear in the default comparison trace, but is validated separately through targeted testing.
 
 ---
 
@@ -186,7 +189,7 @@ This prototype includes:
    Resource-dependent behaviors are explicitly represented
 
 4. **Interruption validation**  
-   Verified through targeted tests
+   Verified through a dedicated forced low-energy test (separate from the default comparison trace)
 
 5. **Automated tests**  
    Ensuring correctness and consistency

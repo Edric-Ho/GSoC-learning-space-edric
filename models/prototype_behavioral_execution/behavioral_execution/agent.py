@@ -8,36 +8,48 @@ from .observation import NeedsObservation
 from .policy import GreedyPolicy
 
 
+class BehavioralAgent(mesa.Agent):
+    def __init__(
+            self,
+            model,
+            behavior_engine: BehaviorEngine,
+            actions: list[Action],
+    ) -> None:
+        super().__init__(model)
+        self.behavior_engine = behavior_engine
+        self.actions = actions
+        self.current_action: Action | None = None
+        self.last_action_event = "none"
+
+    def step(self) -> None:
+        self.behavior_engine.step(self)
+
+
 class WorkAction(Action):
     name = "work"
 
     def is_feasible(self, agent, observation) -> bool:
         return observation.energy >= 2
 
-    def score(self, agent, observation) -> float:
-        return 6.0 if observation.energy >= 5 else 2.0
-
     def start(self, agent) -> None:
-        agent.action_progress = 0
+        super().start(agent)
         agent.last_action_event = "work(start)"
 
     def step(self, agent) -> None:
-        agent.action_progress += 1
-
-        # consume energy every step
+        self.progress += 1
         agent.energy = max(0, agent.energy - 2)
 
-        if agent.action_progress < 3:
+        if self.progress < 3:
             agent.last_action_event = "work(continue)"
         else:
             agent.wealth += 3
             agent.last_action_event = "work(complete)"
 
     def abort(self, agent) -> None:
-        agent.action_progress = 0
+        super().abort(agent)
 
     def is_complete(self, agent) -> bool:
-        return agent.action_progress >= 3
+        return self.progress >= 3
 
 
 class RestAction(Action):
@@ -46,24 +58,20 @@ class RestAction(Action):
     def is_feasible(self, agent, observation) -> bool:
         return observation.energy < observation.max_energy
 
-    def score(self, agent, observation) -> float:
-        # prefer rest strongly when energy is low
-        deficit = observation.max_energy - observation.energy
-        return float(deficit + 3 if observation.energy <= 2 else deficit)
-
     def start(self, agent) -> None:
-        agent.action_progress = 0
+        super().start(agent)
         agent.last_action_event = "rest(start)"
 
     def step(self, agent) -> None:
-        agent.action_progress += 1
+        self.progress += 1
         agent.energy = min(agent.max_energy, agent.energy + 2)
+        agent.last_action_event = "rest(complete)"
 
     def abort(self, agent) -> None:
-        agent.action_progress = 0
+        super().abort(agent)
 
     def is_complete(self, agent) -> bool:
-        return agent.action_progress >= 1
+        return self.progress >= 1
 
 
 class EmergencyRestAction(Action):
@@ -72,22 +80,20 @@ class EmergencyRestAction(Action):
     def is_feasible(self, agent, observation) -> bool:
         return observation.energy <= 1
 
-    def score(self, agent, observation) -> float:
-        return 100.0
-
     def start(self, agent) -> None:
-        agent.action_progress = 0
+        super().start(agent)
         agent.last_action_event = "emergency_rest(start)"
 
     def step(self, agent) -> None:
-        agent.action_progress += 1
+        self.progress += 1
         agent.energy = min(agent.max_energy, agent.energy + 4)
+        agent.last_action_event = "emergency_rest(complete)"
 
     def abort(self, agent) -> None:
-        agent.action_progress = 0
+        super().abort(agent)
 
     def is_complete(self, agent) -> bool:
-        return agent.action_progress >= 1
+        return self.progress >= 1
 
 
 class LeisureAction(Action):
@@ -96,80 +102,78 @@ class LeisureAction(Action):
     def is_feasible(self, agent, observation) -> bool:
         return observation.energy >= 3
 
-    def score(self, agent, observation) -> float:
-        if 4 <= observation.energy <= 5:
-            return 7.0
-        return 1.0
-
     def start(self, agent) -> None:
-        agent.action_progress = 0
+        super().start(agent)
         agent.last_action_event = "leisure(start)"
 
     def step(self, agent) -> None:
-        agent.action_progress += 1
+        self.progress += 1
         agent.energy = max(0, agent.energy - 1)
 
-        if agent.action_progress < 2:
+        if self.progress < 2:
             agent.last_action_event = "leisure(continue)"
         else:
             agent.wealth += 1
             agent.last_action_event = "leisure(complete)"
 
     def abort(self, agent) -> None:
-        agent.action_progress = 0
+        super().abort(agent)
 
     def is_complete(self, agent) -> bool:
-        return agent.action_progress >= 2
+        return self.progress >= 2
 
 
-class NeedsBehavioralAgent(mesa.Agent):
+class NeedsBehavioralAgent(BehavioralAgent):
     def __init__(self, model):
-        super().__init__(model)
-        self.energy = 6
-        self.max_energy = 10
-        self.wealth = 0
+        actions = [
+            EmergencyRestAction(),
+            WorkAction(),
+            RestAction(),
+        ]
 
-        self.current_action = None
-        self.action_progress = 0
-        self.last_action_event = "none"
-
-        self.actions = [EmergencyRestAction(), WorkAction(), RestAction()]
-
-        self.behavior_engine = BehaviorEngine(
+        behavior_engine = BehaviorEngine(
             observation_module=NeedsObservation(),
             evaluator=NeedsEvaluator(),
             decision_policy=GreedyPolicy(),
             action_executor=ActionExecutor(),
         )
 
-    def step(self) -> None:
-        self.behavior_engine.step(self)
+        super().__init__(
+            model=model,
+            behavior_engine=behavior_engine,
+            actions=actions,
+        )
 
-
-class ExtendedNeedsBehavioralAgent(mesa.Agent):
-    def __init__(self, model):
-        super().__init__(model)
-        self.energy = 4
+        self.energy = 6
         self.max_energy = 10
         self.wealth = 0
 
-        self.current_action = None
-        self.action_progress = 0
-        self.last_action_event = "none"
 
-        self.actions = [
+class ExtendedNeedsBehavioralAgent(BehavioralAgent):
+    def __init__(self, model):
+        actions = [
             EmergencyRestAction(),
             WorkAction(),
             RestAction(),
             LeisureAction(),
         ]
 
-        self.behavior_engine = BehaviorEngine(
+        behavior_engine = BehaviorEngine(
             observation_module=NeedsObservation(),
             evaluator=NeedsEvaluator(),
             decision_policy=GreedyPolicy(),
             action_executor=ActionExecutor(),
         )
+
+        super().__init__(
+            model=model,
+            behavior_engine=behavior_engine,
+            actions=actions,
+        )
+
+        self.energy = 4
+        self.max_energy = 10
+        self.wealth = 0
 
     def step(self) -> None:
         self.behavior_engine.step(self)

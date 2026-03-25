@@ -24,4 +24,15 @@ class GreedyPolicy(DecisionPolicy):
         return current_action.name == "work" and agent.energy <= 1
 
     def should_interrupt_lazy(self, agent, observation) -> bool:
-        return agent.current_action is not None
+        """
+        Lightweight trigger for deciding whether a full re-evaluation is needed.
+        For this prototype:
+        - if there is no current action, full evaluation will happen anyway
+        - if the current action is 'work' and energy is critically low,
+          reevaluation may be needed to interrupt it
+        - otherwise, continue the current action without rescoring
+        """
+        if agent.current_action is None:
+            return False
+
+        return agent.current_action.name == "work" and observation.energy <= 1

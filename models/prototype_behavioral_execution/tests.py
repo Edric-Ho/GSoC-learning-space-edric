@@ -13,7 +13,7 @@ def extract_monolithic_trace(steps=10):
 
 def extract_behavioral_trace(steps=10):
     model = SimpleNeedsModel(n_agents=1, seed=100)
-    agent = model.agents_list[0]
+    agent = list(model.agents)[0]
     trace = []
     for _ in range(steps):
         model.step()
@@ -29,13 +29,13 @@ def test_behavioral_model_runs_multiple_steps():
     model = SimpleNeedsModel(n_agents=1, seed=100)
     for _ in range(5):
         model.step()
-    agent = model.agents_list[0]
+    agent = list(model.agents)[0]
     assert 0 <= agent.energy <= agent.max_energy
 
 
 def test_work_action_is_multi_step():
     model = SimpleNeedsModel(n_agents=1, seed=100)
-    agent = model.agents_list[0]
+    agent = list(model.agents)[0]
 
     model.step()
     first_event = agent.last_action_event
@@ -54,7 +54,7 @@ def test_completion_and_recovery_appear_in_trace():
 
 def test_interrupt_appears_when_energy_starts_low_during_work():
     model = SimpleNeedsModel(n_agents=1, seed=100)
-    agent = model.agents_list[0]
+    agent = list(model.agents)[0]
 
     work_action = next(action for action in agent.actions if action.name == "work")
     agent.current_action = work_action
@@ -72,7 +72,7 @@ def test_agent_never_exceeds_max_energy():
     model = SimpleNeedsModel(n_agents=1, seed=100)
     for _ in range(20):
         model.step()
-        agent = model.agents_list[0]
+        agent = list(model.agents)[0]
         assert 0 <= agent.energy <= agent.max_energy
 
 
@@ -80,7 +80,7 @@ def test_leisure_action_executes_in_extended_model():
     from behavioral_execution.model import ExtendedNeedsModel
 
     model = ExtendedNeedsModel(n_agents=1, seed=100)
-    agent = model.agents_list[0]
+    agent = list(model.agents)[0]
 
     found = False
     for _ in range(12):

@@ -9,13 +9,14 @@ def main() -> None:
 
     for tick in range(12):
         model.step()
-        agent = model.agents_list[0]
+        agent = list(model.agents)[0]
         current = agent.current_action.name if agent.current_action else "None"
+        progress = agent.current_action.progress if agent.current_action else "None"
         print(
             f"tick={tick:02d} | "
             f"event={agent.last_action_event:<20} | "
             f"current_action={current:<10} | "
-            f"progress={agent.action_progress} | "
+            f"progress={progress} | "
             f"energy={agent.energy} | "
             f"wealth={agent.wealth}"
         )

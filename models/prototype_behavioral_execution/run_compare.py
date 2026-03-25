@@ -20,7 +20,7 @@ def run_monolithic(steps: int = 10):
 
 def run_behavioral(steps: int = 10):
     model = SimpleNeedsModel(n_agents=1, seed=100)
-    agent = model.agents_list[0]
+    agent = list(model.agents)[0]
     rows = []
     for tick in range(steps):
         model.step()
