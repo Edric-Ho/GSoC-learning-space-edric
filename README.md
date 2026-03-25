@@ -5,27 +5,35 @@ This is a template repository for GSoC candidates working on [Mesa](https://gith
 
 ## Learning Focus
 
-This learning space is structured around a specific question:
+This learning space is structured around a central question:
 
 > At what point does agent behavior in Mesa become complex enough to require structured abstractions?
 
-While building models, I observed a distinction between:
+Through building progressively more complex models, I observed a transition between:
 
-- interaction-driven systems, where simple agent rules are sufficient
-- decision-driven systems, where agent logic becomes increasingly complex and difficult to structure
+- **interaction-driven systems**, where simple local rules are sufficient
+- **decision-driven systems**, where agent logic becomes complex, stateful, and harder to structure
 
-This repository explores that transition through progressively more complex models and reviews of existing Mesa examples.
+This repository explores that transition across multiple models, ranging from simple interaction systems to structured behavioral execution.
 
 In particular, I focus on:
 
-- how agent behavior is currently implemented in Mesa
+- how agent behavior is currently implemented in Mesa (`step()`-centric design)
 - where decision logic becomes difficult to manage
-- what patterns emerge when behavior is made more explicit
+- how multi-step and interruptible behaviors are handled
+- what abstractions emerge when behavior is made explicit
+
+To study this, I implemented:
+
+- baseline models (monolithic `step()` logic)
+- structured behavioral models (decision pipeline / execution layer)
+- comparative experiments to evaluate clarity, modularity, and extensibility
 
 Relevant notes and reviews:
 - `reviews/behavioral_gaps_in_mesa_examples.md`
 
-This aligns with the **Behavioral Framework** project idea, where the goal is to understand and improve how Mesa supports agent decision-making through implementation and experimentation.
+This aligns with the **Behavioral Framework** project idea:
+understanding how Mesa supports behavioral modeling through *implementation, comparison, and evaluation*.
 
 ---
 
@@ -81,38 +89,117 @@ When you open a PR on any Mesa repo, link to the relevant work in this learning 
 
 ## Models
 
-### 1. Behavioral El Farol (Main Example)
+### 1. Behavioral Boltzmann Wealth
+A baseline interaction-driven system extended with structured components.
 
-A structured behavioral agent-based model demonstrating coordination under uncertainty.
+- Focus: interaction → aggregation → emergent distribution
+- Explores limits of simple rule-based agents before decision complexity appears
+
+[View model](./models/behavioral_boltzmann_wealth)
+
+---
+
+### 2. Behavioral El Farol (Main Example)
+
+A structured behavioral model demonstrating coordination under uncertainty.
 
 - Explicit decision pipeline (observe → belief → evaluate → decide → act)
 - Heterogeneous prediction strategies
-- Probabilistic decision-making to avoid synchronization
+- Probabilistic decision-making
 
 [View model](./models/behavioral_el_farol)
 
 ---
 
+### 3. Prototype Behavioral Execution Layer
+
+A minimal, modular execution framework for agent behavior.
+
+- Action abstraction with lifecycle (start / step / complete / interrupt)
+- BehaviorEngine coordinating decision and execution
+- Separation of policy, evaluation, and execution
+- Trace-based validation and extensibility experiments
+
+[View model](./models/prototype_behavioral_execution)
+
+---
+
 ## Learning Progression
 
-Before building full models, I explored several components of agent behavior through smaller prototypes:
+This repository is structured as a progression from simple interaction models to structured behavioral systems.
 
-### Interaction Prototype (`model_1_interaction`)
-Focus: local interactions between agents and emergent effects.
+### Stage 1: Interaction and Emergence
 
-### Needs-Based Prototype (`model_2_needs`)
-Focus: decision-making driven by internal states and utility.
+**Interaction Prototype (`model_1_interaction`)**
+- Local interactions between agents
+- Emergent system behavior without explicit decision structure
 
-### Decision Pipeline Prototype (`model_3_pipeline`)
-Focus: structuring agent reasoning into modular stages.
+---
 
-These prototypes led to the development of a structured behavioral decision framework, which is applied in the Behavioral El Farol model.
+### Stage 2: Internal State and Decision Pressure
+
+**Needs-Based Prototype (`model_2_needs`)**
+- Agents act based on internal state (e.g., energy, needs)
+- Introduces basic decision-making and trade-offs
+
+---
+
+### Stage 3: Structured Decision Pipelines
+
+**Decision Pipeline Prototype (`model_3_pipeline`)**
+- Explicit decomposition of decision-making:
+  observe → evaluate → choose → act
+- Highlights modularization benefits and limitations
+
+---
+
+### Stage 4: Behavioral Models in Practice
+
+**Behavioral Boltzmann Wealth**
+- Tests structured ideas in an interaction-heavy system
+
+**Behavioral El Farol**
+- Full decision-driven system with heterogeneous reasoning
+
+---
+
+### Stage 5: Minimal Behavioral Execution Layer
+
+**Prototype Behavioral Execution (`prototype_behavioral_execution`)**
+- Extracts reusable behavioral abstractions:
+  - Action
+  - DecisionPolicy
+  - Evaluator
+  - BehaviorEngine
+- Supports:
+  - multi-step actions
+  - interruption handling
+  - trace-based validation
+- Enables controlled comparison with baseline models
+
+---
+
+This progression directly informs the proposed **Behavioral Execution Layer**, grounded in observed modeling challenges rather than imposed design.
 
 ---
 
 ## Repo structure
 ```text
 ├── models/
+│   ├── behavioral_boltzmann_wealth/
+│   │   ├── core/
+│   │   ├── tests/
+│   │   ├── run.py
+│   │   ├── README.md
+│   │   └── thinking_process.md
+│   │
+│   ├── behavioral_el_farol/
+│   │   ├── core/
+│   │   ├── tests/
+│   │   ├── run.py
+│   │   ├── README.md
+│   │   └── thinking_process.md
+│   │
 │   ├── model_1_interaction/
 │   │   ├── core/
 │   │   ├── tests/
@@ -128,11 +215,19 @@ These prototypes led to the development of a structured behavioral decision fram
 │   │   └── thinking_process.md
 │   │
 │   └── model_3_pipeline/
-│       ├── core/
-│       ├── tests/
+│   │   ├── core/
+│   │   ├── tests/
+│   │   ├── run.py
+│   │   ├──  README.md
+│   │   └── thinking_process.md
+│   │
+│   └── prototype_behavioral_execution/
+│       ├── behavioral_execution/
 │       ├── run.py
-│       ├── README.md
-│       └── thinking_process.md
+│       ├── run_compare.py
+│       ├── run_extension.py
+│       ├── tests.py
+│       └── README.md
 │
 ├── notes/
 │   ├── abm_fundamentals.md
