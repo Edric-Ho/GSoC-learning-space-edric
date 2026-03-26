@@ -1,3 +1,11 @@
+⚠️ Note
+
+This prototype represents a candidate architecture for structuring agent behavior in Mesa.
+
+It is not a finalized design. The abstractions presented here will be validated, refined, or simplified based on findings from the Phase 1 discovery process.
+
+---
+
 # Prototype: Behavioral Execution Layer for Mesa
 
 This repository contains a Mesa-integrated proof of concept for a **Behavioral Execution Layer**, developed as part of my GSoC proposal.
